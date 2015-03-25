@@ -98,7 +98,6 @@ namespace POSHCredStore
         if (!File.Exists(this._credentialFilePath))
         {
           using (File.Create(this._credentialFilePath, 8192, FileOptions.RandomAccess, CredentialStore.GetSecuritySettings()))
-            ;
           fileStream = this.OpenFile(FileShare.None);
           CredentialStore.InitializeCredentialsDocument((Stream) fileStream);
         }

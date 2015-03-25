@@ -102,7 +102,6 @@ namespace POSHCredStore
         this.ThrowTerminatingError(new ErrorRecord(ex, "Core_GetCredentialStoreItem_ProcessRecordget", System.Management.Automation.ErrorCategory.NotSpecified, (object) null));
       }
       this.WriteObject((object) list, true);
-      this.ReportErrorIfNotFound(str1, str2, hostPattern, usernamePattern, (IEnumerable<CredentialStoreItem>) list);
     }
 
     private void ReportErrorIfNotFound(string hostPatternString, string userPatternString, WildcardPattern hostPattern, WildcardPattern usernamePattern, IEnumerable<CredentialStoreItem> result)
@@ -110,7 +109,7 @@ namespace POSHCredStore
       if (!WildcardPattern.ContainsWildcardCharacters(hostPatternString))
       {
         bool flag = false;
-        foreach (CredentialStoreItem credentialStoreItem in result)
+        foreach (CredentialStore credentialStoreItem in result)
         {
           if (hostPattern.IsMatch(credentialStoreItem.Host))
           {
@@ -120,8 +119,6 @@ namespace POSHCredStore
         }
         if (!flag)
         {
-          VimException vimException = new VimException("Core_GetCredentialStoreItem_ProcessRecord_NotFoundByHost", VMware.VimAutomation.Sdk.Types.V1.ErrorHandling.VimException.ErrorCategory.ObjectNotFound, string.Format(Strings.Core_GetCredentialStoreItem_ProcessRecord_NotFoundByHost, (object) hostPatternString), VimExceptionSeverity.Error, (object) null, (Exception) null, (string) null, (string) null);
-          this.WriteError(new ErrorRecord((Exception) vimException, vimException.ErrorId, (System.Management.Automation.ErrorCategory) vimException.ErrorCategory, (object) null));
         }
       }
       if (WildcardPattern.ContainsWildcardCharacters(userPatternString))
@@ -137,8 +134,6 @@ namespace POSHCredStore
       }
       if (flag1)
         return;
-      VimException vimException1 = new VimException("Core_GetCredentialStoreItem_ProcessRecord_NotFoundByUser", VMware.VimAutomation.Sdk.Types.V1.ErrorHandling.VimException.ErrorCategory.ObjectNotFound, string.Format(Strings.Core_GetCredentialStoreItem_ProcessRecord_NotFoundByUser, (object) userPatternString), VimExceptionSeverity.Error, (object) null, (Exception) null, (string) null, (string) null);
-      this.WriteError(new ErrorRecord((Exception) vimException1, vimException1.ErrorId, (System.Management.Automation.ErrorCategory) vimException1.ErrorCategory, (object) null));
     }
   }
 
